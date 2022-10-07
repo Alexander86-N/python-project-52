@@ -1,0 +1,9 @@
+__pycache__/
+.venv/
+dist/
+.coverage
+coverage.xml
+.pytest_cache/
+.vim
+tmp/
+db.sqlite3
