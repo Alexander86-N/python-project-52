@@ -6,5 +6,6 @@ coverage.xml
 .pytest_cache/
 .vim
 tmp/
-db.sqlite3
+*.sqlite3
 .env
+htmlcov/

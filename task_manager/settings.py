@@ -14,10 +14,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-
 load_dotenv()
-env_path = Path('..') / '.env'
-load_dotenv(dotenv_path=env_path)
+# env_path = Path('..') / '.env'
+# load_dotenv(dotenv_path=env_path)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -30,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -49,7 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'task_manager',
+    "task_manager",
 ]
 
 MIDDLEWARE = [
@@ -63,11 +62,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "task_manager.urls"
-TEMPLATE_DIR = os.path.join(BASE_DIR, 'task_manager/templates')
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [TEMPLATE_DIR],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -99,11 +98,12 @@ DATABASES = {
 #    "USER": os.getenv("POSTGRES_USER"),
 #    "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
 #    "HOST": os.getenv("POSTGRES_HOST"),
-#    "PORT": os.getenv("POSTGRES_POST"),
+#    "POST": os.getenv("POSTGRES_POST"),
 # }
 
 # if os.getenv("DB_POSTGRES") in ["True"]:
 #    DATABASES["default"] = POSTGRES_DATABASES
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
