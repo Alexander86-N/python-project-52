@@ -7,3 +7,4 @@ coverage.xml
 .vim
 tmp/
 db.sqlite3
+.env
