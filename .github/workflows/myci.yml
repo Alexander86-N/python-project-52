@@ -1,4 +1,4 @@
-me: Python CI
+name: Python CI
 
 on:
   - push
@@ -6,8 +6,8 @@ on:
 
 jobs:
   build:
-    env:
-      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+#    env:
+#      SECRET_KEY: ${{ secrets.SECRET_KEY }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
