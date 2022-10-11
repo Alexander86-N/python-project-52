@@ -36,7 +36,7 @@ ALLOWED_HOSTS = [
     '0.0.0.0',
     'webserver',
     '127.0.0.1',
-    'tas-man.herokuapp.com'
+    'mysterious-bastion-77076.herokuapp.com'
 ]
 
 
