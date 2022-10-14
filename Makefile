@@ -16,3 +16,9 @@ migrate:
 
 runserver:
 	poetry run python manage.py runserver
+
+prepare-translation:
+	poetry run django-admin makemessages --ignore="static" --ignore=".env" -l en
+
+complete-translation:
+	poetry run django-admin compilemessages

@@ -1,10 +1,48 @@
 <!DOCTYPE html>
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{#{% bootstap_javascript jquery='full' %}#}
+{% load i18n %}
+
 <html lang="ru">  
     <head>
-        <meta charset="UTF-8">
-	<title>Главная страница</title>
+	<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>{% trans "Менеджер задач" %}</title>
     </head>
-    <body>
-	<h1>{{ hello }}</h1>
+    <body class="d-flex flex-column min-vh-100">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+            <a class="navbar-brand" href="{% url 'home' %}">{% trans "Менеджер задач" %}</a>
+	    <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarToggleExternalContent">
+		<span class="navbar-toggler-icon"></span>
+	    </button>
+	    <div class="collapse navbar-collapse" id="navbarToggleExternalContent">
+		<ul class="navbar-nav mr-auto">
+	            <li class="nav-item">
+		        <a class="nav-link" {#href="{% url 'list_of_userrs' %}#}>{% trans "Пользователи" %}</a>
+		    </li>
+		    </ul>
+		<ul class="navbar-nav">
+	            <li class="nav-item">
+		        <a class="nav-link" {#href="{% url 'sing_in' %}#}>{% trans "Вход" %}</a>
+		    </li>
+		    <li class="nav-item">
+		        <a class="nav-link" {#href="{% url 'sing_up' %}#}>{% trans "Регистрация" %}</a>
+                    </li>
+		</ul>
+	    </div>
+        </nav>
+	{#<div class="container">#}
+		{#    {% bootstrap_massages %}#}
+		{#</div>#}
+	<div class="container wrapper flex-grow-1">
+	    {% block content %}
+	    {% endblock %}
+	</div>
+	<footer>
+	<div class="container my-5 pt-4 border-top">
+	    <a target="_blank" href="https://github.com/Alexander86-N/python-project-52.git">{% trans "Создатель" %}</a>
+	</div>
+        </footer>
     </body>
 </html>

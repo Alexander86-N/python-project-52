@@ -33,7 +33,6 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
     'localhost',
-    '0.0.0.0',
     'webserver',
     '127.0.0.1',
     'mysterious-bastion-77076.herokuapp.com'
@@ -51,17 +50,19 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     "django.contrib.staticfiles",
     "task_manager",
+    "bootstrap4",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
 ]
 
 ROOT_URLCONF = "task_manager.urls"
@@ -132,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "UTC"
 
@@ -140,6 +141,12 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = (
+    ("ru", "Russian"),
+    ("en", "English"),
+)
+
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'task_manager/locale'), )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
