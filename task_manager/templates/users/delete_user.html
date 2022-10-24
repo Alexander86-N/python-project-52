@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+<h1 class="my-4">{% trans 'Удаление пользователя' %}</h1>
+<p>{% trans 'Вы уверены, что хотите удалить ' %}{{ user.first_name }} {{ user.last_name }}?</p>
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        {% bootstrap_form form %}
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value={% trans 'Удалить' %}>
+	</div>
+    </div>
+</form>
+{% endblock %}

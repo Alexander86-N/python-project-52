@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     "django.contrib.staticfiles",
     "task_manager",
+    "task_manager.users",
     "bootstrap4",
 ]
 
@@ -88,6 +89,9 @@ WSGI_APPLICATION = "task_manager.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+# db_from_env = dj_database_url.config()
+# DATABASES['default'].update(db_from_env)
 
 DATABASES = {
     "default": {
@@ -163,3 +167,5 @@ django_heroku.settings(locals())
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = 'users.ProjectUsers'
