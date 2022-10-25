@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+<h1 class="my-4">{% trans 'Удаление статуса' %}</h1>
+<p>{% trans 'Вы уверины, что хотите удалить ' %} {{ statuses.name }} ?</p>
+<form method="POST">
+    {% csrf_token %}
+    <input class="btn btn-danger" type="submit" value={% trans 'Да, удалить' %}>
+</form>
+{% endblock %}

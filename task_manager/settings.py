@@ -16,11 +16,15 @@ import os
 import dj_database_url
 import django_heroku
 
-load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+load_dotenv()
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -29,14 +33,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv("DEBUG", True))
+# DEBUG = bool(os.getenv("DEBUG", True))
+#
+# ALLOWED_HOSTS = [
+#    'localhost',
+#    'webserver',
+#    '127.0.0.1',
+#    'mysterious-bastion-77076.herokuapp.com'
+# ]
+DEBUG = False
 
-ALLOWED_HOSTS = [
-    'localhost',
-    'webserver',
-    '127.0.0.1',
-    'mysterious-bastion-77076.herokuapp.com'
-]
+if DEBUG:
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "webserver"]
+else:
+    ALLOWED_HOSTS = ["mysterious-bastion-77076.herokuapp.com"]
 
 
 # Application definition
@@ -51,6 +61,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "task_manager",
     "task_manager.users",
+    "task_manager.statuses",
     "bootstrap4",
 ]
 
@@ -90,16 +101,18 @@ WSGI_APPLICATION = "task_manager.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
-if "DATABASE_URL" in os.environ:
-    DATABASES["default"] = dj_database_url.config(
-        conn_max_age=600, ssl_require=True)
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES = {
+#    "default": {
+#        "ENGINE": "django.db.backends.sqlite3",
+#        "NAME": BASE_DIR / "db.sqlite3",
+#    }
+# }
+#
+# if "DATABASE_URL" in os.environ:
+#    DATABASES["default"] = dj_database_url.config(
+#        conn_max_age=600, ssl_require=True)
 
 # db_from_env = dj_database_url.config()
 # DATABASES['default'].update(db_from_env)
@@ -163,6 +176,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'task_manager/staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
+options = DATABASES['default'].get('OPTIONS', {})
+options.pop('sslmode', None)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
