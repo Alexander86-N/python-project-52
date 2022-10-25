@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = bool(os.getenv("DEBUG", True))
 
 ALLOWED_HOSTS = [
     'localhost',
@@ -90,9 +90,6 @@ WSGI_APPLICATION = "task_manager.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -100,8 +97,12 @@ DATABASES = {
     }
 }
 
-db_from_env = dj_database_url.config()
-DATABASES['default'].update(db_from_env)
+if "DATABASE_URL" in os.environ:
+    DATABASES["default"] = dj_database_url.config(
+        conn_max_age=600, ssl_require=True)
+
+# db_from_env = dj_database_url.config()
+# DATABASES['default'].update(db_from_env)
 
 # POSTGRES_DATABASES = {
 #    "ENGINE": "django.db.backends.postgresql",
