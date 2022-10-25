@@ -109,14 +109,14 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 #
 # if "DATABASE_URL" in os.environ:
 #    DATABASES["default"] = dj_database_url.config(
 #        conn_max_age=600, ssl_require=True)
 
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # POSTGRES_DATABASES = {
 #    "ENGINE": "django.db.backends.postgresql",
