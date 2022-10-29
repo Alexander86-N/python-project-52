@@ -29,7 +29,7 @@
 			<a class="nav-link" {#href="{% url 'list_of_labels' %}"#}>{% trans "Метки" %}</a>
 		    </li>
 		    <li class="nav-item">
-			<a class="nav-link" {#href="{% url 'list_of_tasks' %}"#}>{% trans "Задачи" %}</a>
+			<a class="nav-link" href="{% url 'list_of_tasks' %}">{% trans "Задачи" %}</a>
 		    </li>
 		    {% else %}
 		    <li class="nav-item">

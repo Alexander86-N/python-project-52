@@ -41,8 +41,8 @@ class TestStatuses(TestCase):
         self.assertRedirects(response, '/statuses/')
         self.assertTrue(Statuses.objects.filter(name='Good bye').exists())
 
-    def test_dalete_user(self):
-        """Тест удаления пользователя."""
+    def test_dalete_status(self):
+        """Тест удаления статуса."""
 
         self.client.force_login(self.user)
         url = reverse('delete_status', args=(self.first_status.pk, ))

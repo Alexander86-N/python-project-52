@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block content %}
+<h1 class="my-4">{% translate "Создать задачу" %}</h1>
+<form method="POST">
+    {% csrf_token %}
+    <div>
+        {% bootstrap_form form %}
+	<div class="form-group">
+            <input class="btn btn-primary" type="submit" value={% translate "Создать" %}>
+	</div>
+    </div>
+</form>
+{% endblock %}
