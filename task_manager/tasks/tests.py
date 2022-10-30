@@ -5,7 +5,7 @@ from task_manager.statuses.models import Statuses
 from task_manager.users.models import ProjectUsers
 
 
-class TestStatuses(TestCase):
+class TestTasks(TestCase):
 
     @classmethod
     def setUpTestData(cls):

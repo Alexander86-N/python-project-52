@@ -7,9 +7,10 @@ class TasksForm(ModelForm):
 
     class Meta:
         model = Tasks
-        fields = ['name', 'description', 'executor', 'status']
+        fields = ['name', 'description', 'executor', 'status', 'labels']
         labels = {"name": gettext("Имя"),
                   "description": gettext("Описание"),
                   "executor": gettext("Исполнитель"),
-                  "status": gettext("Статус")
+                  "status": gettext("Статус"),
+                  "labels": gettext("Метки")
                   }

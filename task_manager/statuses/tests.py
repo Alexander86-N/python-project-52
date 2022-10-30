@@ -18,6 +18,7 @@ class TestStatuses(TestCase):
         cls.first_status = Statuses.objects.create(name="Hello")
 
     def test_create_status(self):
+        """Тест создания статуса."""
 
         self.client.force_login(self.user)
         response = self.client.post(
