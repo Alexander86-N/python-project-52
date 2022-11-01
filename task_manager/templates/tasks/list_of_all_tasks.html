@@ -10,7 +10,7 @@
 	<form class="form-inline center" method="GET">
 	    {% csrf_token %}
 	    <div>
-		{#{% bootstrap_form filter.form field_class="ml-2 mr-2" %}#}
+		{% bootstrap_form filter.form field_class="ml-2 mr-2" %}
 		<div class="form-group">
 		    <input class="btn btn-primary" type="submit" value={% translate "Показать" %}>
 		</div>

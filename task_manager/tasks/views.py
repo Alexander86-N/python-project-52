@@ -1,21 +1,24 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView
 from django.views.generic.edit import FormView, CreateView
 from django.views.generic.edit import DeleteView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django_filters.views import FilterView
 from django.contrib import messages
 from django.utils.translation import gettext
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from .models import Tasks
 from .forms import TasksForm
+from .filters import TasksFilter
 
 
-class ListOfAllTasks(LoginRequiredMixin, ListView):
+class ListOfAllTasks(LoginRequiredMixin, FilterView):
 
     model = Tasks
     template_name = 'tasks/list_of_all_tasks.html'
     context_object_name = 'tasks_list'
+    filterset_class = TasksFilter
 
 
 class CreateTask(LoginRequiredMixin, SuccessMessageMixin,

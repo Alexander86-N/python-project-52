@@ -3,6 +3,8 @@ from django.urls import reverse
 from task_manager.tasks.models import Tasks
 from task_manager.statuses.models import Statuses
 from task_manager.users.models import ProjectUsers
+from django_filters.filterset import FilterSet
+from django_filters.filters import ModelChoiceFilter
 
 
 class TestTasks(TestCase):
@@ -72,3 +74,29 @@ class TestTasks(TestCase):
 
         self.assertEqual(Tasks.objects.count(), 0)
         self.assertRedirects(response, '/tasks/')
+
+    def test_filter_found_for_status(self):
+        """Тест проверки фильтра по Статусу."""
+
+        instance = Tasks._meta.get_field("status")
+        result = FilterSet.filter_for_field(instance, "status")
+
+        self.assertIsInstance(result, ModelChoiceFilter)
+        self.assertEqual(result.field_name, "status")
+
+    def test_filter_found_for_executor(self):
+        """Тест проверки фильтра по Исполнитель."""
+
+        instance = Tasks._meta.get_field("executor")
+        result = FilterSet.filter_for_field(instance, "executor")
+
+        self.assertIsInstance(result, ModelChoiceFilter)
+        self.assertEqual(result.field_name, "executor")
+
+    def test_filter_found_for_labels(self):
+        """Тест проверки фильтра по Метка."""
+
+        instance = Tasks._meta.get_field("labels")
+        result = FilterSet.filter_for_field(instance, "labels")
+
+        self.assertEqual(result.field_name, "labels")
