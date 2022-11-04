@@ -80,4 +80,4 @@ class DeleteUser(LoginRequiredMixin, WithoutAccessMixin, SuccessMessageMixin,
     model = ProjectUsers
     template_name = 'users/delete_user.html'
     success_url = reverse_lazy('list_of_users')
-    success_message = gettext("Пользователь успешно удален")
+    success_message = gettext("Пользователь успешно удалён")
