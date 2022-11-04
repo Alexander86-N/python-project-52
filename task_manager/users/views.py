@@ -51,7 +51,7 @@ class UserLogin(SuccessMessageMixin, LoginView, FormView):
     template_name = 'users/login.html'
     form_class = SignInForm
     next_page = reverse_lazy('home')
-    success_message = gettext("Вы залогинены.")
+    success_message = gettext("Вы залогинены")
 
 
 class UserLogout(SuccessMessageMixin, LogoutView):
@@ -60,7 +60,7 @@ class UserLogout(SuccessMessageMixin, LogoutView):
 
     def dispatch(self, request, *args, **kwargs):
         messages.add_message(request, messages.SUCCESS,
-                             gettext("Вы разалогинены."))
+                             gettext("Вы разалогинены"))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -71,7 +71,7 @@ class UpdateUser(LoginRequiredMixin, WithoutAccessMixin, SuccessMessageMixin,
     template_name = 'users/update_user.html'
     form_class = SignUpForm
     success_url = reverse_lazy('list_of_users')
-    success_message = gettext("Пользователь успешно изменён.")
+    success_message = gettext("Пользователь успешно изменён")
 
 
 class DeleteUser(LoginRequiredMixin, WithoutAccessMixin, SuccessMessageMixin,
@@ -80,4 +80,4 @@ class DeleteUser(LoginRequiredMixin, WithoutAccessMixin, SuccessMessageMixin,
     model = ProjectUsers
     template_name = 'users/delete_user.html'
     success_url = reverse_lazy('list_of_users')
-    success_message = gettext("Пользователь успешно удален.")
+    success_message = gettext("Пользователь успешно удален")
