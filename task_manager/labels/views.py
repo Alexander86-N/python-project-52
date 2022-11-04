@@ -44,7 +44,6 @@ class DeleteLabel(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Labels
     template_name = 'labels/delete_label.html'
     success_url = reverse_lazy('list_of_labels')
-    success_message = gettext('Метка успешно удалена')
 
     def form_valid(self, form):
         try:
@@ -52,4 +51,7 @@ class DeleteLabel(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
         except ProtectedError:
             messages.error(self.request, gettext("Невозможно удалить метку,\
                 потому что она используется"))
+        else:
+            messages.success(self.request,
+                             gettext('Метка успешно удалена'))
         return redirect(self.success_url)
