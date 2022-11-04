@@ -8,3 +8,25 @@
 
 This is a new project of my studies.
 View the work of the Task Manager on [Heroku](https://mysterious-bastion-77076.herokuapp.com/)
+
+## How to install and use
+
+### Install
+```
+git clone https://github.com/Alexander86-N/python-project-52.git
+
+cd python-project-52
+
+make install
+```
+### Setting up Environment variables
+
+Create a file in the root directory ".env" and prescribe in it:
+- SECRET_KEY='something';
+- DEBUG=True, if you want to enable debug mode;
+- ACCESS_TOKEN='token_of_your_account_in_rollbar'.
+
+### Running the application on a local server
+```
+make runserver
+```

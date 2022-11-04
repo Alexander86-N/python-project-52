@@ -1,5 +1,0 @@
-- model: statuses.statuses
-  pk: 1
-  fields:
-    name: ola -la!
-    created_at: 2022-10-25 16:13:43.793561+00:00
