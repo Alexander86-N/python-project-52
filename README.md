@@ -6,8 +6,13 @@
 
 # Task Manager
 
-This is a new project of my studies.
-View the work of the Task Manager on [Heroku](https://mysterious-bastion-77076.herokuapp.com/)
+This is my first full-fledged Task Manager web application,
+that allows you to set tasks, assign performers and change their statuses. 
+Registration and authentication are required to work with the system.
+
+## Application Overview
+
+**View the work of the Task Manager on [Heroku](https://mysterious-bastion-77076.herokuapp.com/)**
 
 ## How to install and use
 

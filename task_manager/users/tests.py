@@ -16,15 +16,12 @@ class HomePageTest(TestCase):
 
 class UsersModelTest(TestCase):
 
+    fixtures = ['users.yaml']
+
     @classmethod
     def setUpTestData(cls):
 
-        ProjectUsers.objects.create(
-            first_name="Ivan",
-            last_name="Ivanov",
-            username="Vanek",
-            password="badpass1"
-        )
+        cls.first_user = ProjectUsers.objects.get(pk=1)
 
     def test_if_can_register_user(self):
         """Тест для проверки правильности регистрации пользователя."""
@@ -38,7 +35,7 @@ class UsersModelTest(TestCase):
         }, follow=True)
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(ProjectUsers.objects.count(), 2)
+        self.assertEqual(ProjectUsers.objects.count(), 3)
         self.assertTrue(ProjectUsers.objects.filter(
             username='Petrushka'
         ).exists())
@@ -49,7 +46,7 @@ class UsersModelTest(TestCase):
 
         response = self.client.post(reverse('login'), {
             "username": "Vanek",
-            "password": "badpass1"
+            "password": "fakepass1"
         }, follow=True)
 
         self.assertEqual(response.status_code, 200)
@@ -57,17 +54,16 @@ class UsersModelTest(TestCase):
     def test_update_users(self):
         """Тест корректного изменения пользователя."""
 
-        user = ProjectUsers.objects.get(pk=1)
-        self.client.force_login(user)
-        url = reverse('update_user', args=(user.id, ))
+        self.client.force_login(self.first_user)
+        url = reverse('update_user', args=(self.first_user.id, ))
         response = self.client.post(url, {
             "first_name": "Ivanushka",
-            "last_name": user.last_name,
-            "username": user.username,
+            "last_name": self.first_user.last_name,
+            "username": self.first_user.username,
             "password1": "badpass2",
             "password2": "badpass2"
         }, follow=True)
-        new_user = ProjectUsers.objects.get(username=user.username)
+        new_user = ProjectUsers.objects.get(username=self.first_user.username)
 
         self.assertRedirects(response, '/users/')
         self.assertTrue(new_user.check_password("badpass2"))
@@ -75,10 +71,10 @@ class UsersModelTest(TestCase):
     def test_dalete_user(self):
         """Тест удаления пользователя."""
 
-        user = ProjectUsers.objects.get(pk=1)
-        self.client.force_login(user)
-        url = reverse('delete_user', args=(user.id, ))
+#        user = ProjectUsers.objects.get(pk=1)
+        self.client.force_login(self.first_user)
+        url = reverse('delete_user', args=(self.first_user.id, ))
         response = self.client.post(url, follow=True)
 
-        self.assertEqual(ProjectUsers.objects.count(), 0)
+        self.assertEqual(ProjectUsers.objects.count(), 1)
         self.assertRedirects(response, '/users/')

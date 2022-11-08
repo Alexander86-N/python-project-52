@@ -3,16 +3,14 @@ from django.views.generic.edit import FormView, CreateView
 from django.views.generic.edit import DeleteView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import ProtectedError
-from django.contrib import messages
 from django.utils.translation import gettext
-from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from task_manager.utils import WithoutAccessMixin, DeletingAnElementMixin
 from .models import Labels
 from .forms import LabelsForm
 
 
-class ListOfAllLabels(LoginRequiredMixin, ListView):
+class ListOfAllLabels(LoginRequiredMixin, WithoutAccessMixin, ListView):
 
     model = Labels
     template_name = 'labels/list_of_all_labels.html'
@@ -39,19 +37,22 @@ class UpdateLabel(LoginRequiredMixin, SuccessMessageMixin,
     success_message = gettext('Метка успешно изменена')
 
 
-class DeleteLabel(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class DeleteLabel(LoginRequiredMixin, DeletingAnElementMixin,
+                  SuccessMessageMixin, DeleteView):
 
     model = Labels
     template_name = 'labels/delete_label.html'
-    success_url = reverse_lazy('list_of_labels')
-
-    def form_valid(self, form):
-        try:
-            self.object.delete()
-        except ProtectedError:
-            messages.error(self.request, gettext("Невозможно удалить метку,\
-                потому что она используется"))
-        else:
-            messages.success(self.request,
-                             gettext('Метка успешно удалена'))
-        return redirect(self.success_url)
+    redirect_url = reverse_lazy('list_of_labels')
+    error_message = "Невозможно удалить метку, потому что она используется"
+    success_message = "Метка успешно удалена"
+#
+#    def form_valid(self, form):
+#        try:
+#            self.object.delete()
+#        except ProtectedError:
+#            messages.error(self.request, gettext("Невозможно удалить метку,\
+#                потому что она используется"))
+#        else:
+#            messages.success(self.request#,
+#                             gettext('Метка успешно удалена'))
+#        return redirect(self.success_url)

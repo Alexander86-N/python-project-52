@@ -9,33 +9,24 @@ from django_filters.filters import ModelChoiceFilter
 
 class TestTasks(TestCase):
 
+    fixtures = ['users.yaml',
+                'statuses.yaml',
+                'tasks.yaml',
+                'labels.yaml']
+
     @classmethod
     def setUpTestData(cls):
 
-        cls.user_one = ProjectUsers.objects.create(
-            first_name="Ivan",
-            last_name="Ivanov",
-            username="Vanek",
-            password="badpass1"
-        )
-        cls.user_two = ProjectUsers.objects.create(
-            first_name="Petr",
-            last_name="Petrov",
-            username="Petya",
-            password="badpass2"
-        )
-
-        cls.first_status = Statuses.objects.create(name="Hello")
-        cls.first_task = Tasks.objects.create(name="Дело",
-                                              description="Пройти тест",
-                                              author=cls.user_one,
-                                              executor=cls.user_two,
-                                              status=cls.first_status)
+        cls.first_user = ProjectUsers.objects.get(pk=1)
+        cls.second_user = ProjectUsers.objects.get(pk=2)
+        cls.status = Statuses.objects.get(pk=3)
+        cls.first_task = Tasks.objects.get(pk=12)
+        cls.second_task = Tasks.objects.get(pk=13)
 
     def test_create_task(self):
         """Тест создания задачи."""
 
-        self.client.force_login(self.user_two)
+        self.client.force_login(self.second_user)
         response = self.client.post(
             reverse('create_task'), {
                 "name": "Welcome",
@@ -46,20 +37,20 @@ class TestTasks(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Tasks.objects.count(), 2)
+        self.assertEqual(Tasks.objects.count(), 3)
         self.assertTrue(Tasks.objects.filter(name='Welcome').exists())
         self.assertRedirects(response, '/tasks/')
 
     def test_update_task(self):
         """Тест корректного изменения задачи."""
 
-        self.client.force_login(self.user_one)
+        self.client.force_login(self.first_user)
         url = reverse('update_task', args=(self.first_task.pk, ))
         response = self.client.post(url, {
             "name": "One more time",
             "description": "Новый тест не прошел, нужно изменить",
             "executor": 2,
-            "status": 1
+            "status": 3
         }, follow=True)
 
         self.assertRedirects(response, '/tasks/')
@@ -68,11 +59,11 @@ class TestTasks(TestCase):
     def test_dalete_task(self):
         """Тест удаления задачи."""
 
-        self.client.force_login(self.user_one)
+        self.client.force_login(self.first_user)
         url = reverse('delete_task', args=(self.first_task.id, ))
         response = self.client.post(url, follow=True)
 
-        self.assertEqual(Tasks.objects.count(), 0)
+        self.assertEqual(Tasks.objects.count(), 1)
         self.assertRedirects(response, '/tasks/')
 
     def test_filter_found_for_status(self):
@@ -100,3 +91,34 @@ class TestTasks(TestCase):
         result = FilterSet.filter_for_field(instance, "labels")
 
         self.assertEqual(result.field_name, "labels")
+
+    def test_list_of_all_tasks(self):
+        """Тест получения списка всех задач."""
+
+        self.client.force_login(self.first_user)
+        response = self.client.get(reverse('list_of_tasks'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertQuerysetEqual(
+            list(response.context['tasks_list']),
+            [self.first_task, self.second_task]
+        )
+
+    def test_delete_a_task_if_not_the_author(self):
+        """Тест удаление чужой задачи."""
+
+        self.client.force_login(self.second_user)
+        response = self.client.post(
+            reverse('delete_task', args=(self.first_task.pk, )),
+            follow=True
+        )
+
+        self.assertRedirects(response, '/tasks/')
+        self.assertTrue(Tasks.objects.filter(name='Test').exists())
+
+    def test_an_unsecured_user_tries_to_view_the_tasks(self):
+        """Тест незалогиненный пользователь пытается посмотреть задачи."""
+
+        response = self.client.get(reverse('list_of_tasks'))
+
+        self.assertRedirects(response, '/login/')

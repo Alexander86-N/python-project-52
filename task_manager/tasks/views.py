@@ -8,12 +8,13 @@ from django.contrib import messages
 from django.utils.translation import gettext
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from task_manager.utils import WithoutAccessMixin
 from .models import Tasks
 from .forms import TasksForm
 from .filters import TasksFilter
 
 
-class ListOfAllTasks(LoginRequiredMixin, FilterView):
+class ListOfAllTasks(LoginRequiredMixin, WithoutAccessMixin, FilterView):
 
     model = Tasks
     template_name = 'tasks/list_of_all_tasks.html'

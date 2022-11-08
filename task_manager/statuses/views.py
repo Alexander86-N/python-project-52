@@ -4,14 +4,13 @@ from django.views.generic.edit import DeleteView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.translation import gettext
-# from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from task_manager.utils import WithoutAccessMixin, DeletingAnElementMixin
 from .models import Statuses
 from .forms import StatusesForm
-# from task_manager.users.views import WithoutAccessMixin
 
 
-class ListOfAllStatuses(LoginRequiredMixin, ListView):
+class ListOfAllStatuses(LoginRequiredMixin, WithoutAccessMixin, ListView):
 
     model = Statuses
     template_name = 'statuses/list_of_all_statuses.html'
@@ -38,16 +37,11 @@ class UpdateStatus(SuccessMessageMixin,
     success_message = gettext('Статус успешно изменён')
 
 
-class DeleteStatus(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
+class DeleteStatus(LoginRequiredMixin, DeletingAnElementMixin,
+                   SuccessMessageMixin, DeleteView):
 
     model = Statuses
     template_name = 'statuses/delete_status.html'
-    success_url = reverse_lazy('list_of_all_statuses')
     success_message = gettext('Статус успешно удалён')
-#    message_error = 'Невозможно удалить статус, потому что он используется'
-#
-#    def dispatch(self, request, *args, **kwargs):
-#        if self.request.user != self.get_object():
-#            messages.error(self.request, gettext(message_error))
-#            return redirect(reverse_lazy('list_of_all_statuses'))
-#        return super().dispatch(request, *args, **kwargs)
+    error_message = "Невозможно удалить статус, потому что он используется"
+    redirect_url = reverse_lazy('list_of_all_statuses')
