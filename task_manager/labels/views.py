@@ -45,14 +45,3 @@ class DeleteLabel(LoginRequiredMixin, DeletingAnElementMixin,
     redirect_url = reverse_lazy('list_of_labels')
     error_message = "Невозможно удалить метку, потому что она используется"
     success_message = "Метка успешно удалена"
-#
-#    def form_valid(self, form):
-#        try:
-#            self.object.delete()
-#        except ProtectedError:
-#            messages.error(self.request, gettext("Невозможно удалить метку,\
-#                потому что она используется"))
-#        else:
-#            messages.success(self.request#,
-#                             gettext('Метка успешно удалена'))
-#        return redirect(self.success_url)

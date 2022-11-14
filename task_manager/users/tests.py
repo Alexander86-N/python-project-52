@@ -71,7 +71,6 @@ class UsersModelTest(TestCase):
     def test_dalete_user(self):
         """Тест удаления пользователя."""
 
-#        user = ProjectUsers.objects.get(pk=1)
         self.client.force_login(self.first_user)
         url = reverse('delete_user', args=(self.first_user.id, ))
         response = self.client.post(url, follow=True)

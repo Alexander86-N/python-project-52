@@ -7,7 +7,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.utils.translation import gettext
 from django.urls import reverse_lazy
-from task_manager.utils import WithoutAccessMixin, WithAccessMixin
+from task_manager.utils import (
+    WithoutAccessMixin,
+    WithAccessMixin,
+    DeletingAnElementMixin
+)
 from .models import ProjectUsers
 from .forms import SignInForm, SignUpForm
 
@@ -59,7 +63,8 @@ class UpdateUser(LoginRequiredMixin, WithoutAccessMixin, WithAccessMixin,
 
 
 class DeleteUser(LoginRequiredMixin, WithoutAccessMixin, WithAccessMixin,
-                 SuccessMessageMixin, DeleteView, FormView):
+                 DeletingAnElementMixin, SuccessMessageMixin,
+                 DeleteView, FormView):
 
     model = ProjectUsers
     template_name = 'users/delete_user.html'
@@ -67,3 +72,6 @@ class DeleteUser(LoginRequiredMixin, WithoutAccessMixin, WithAccessMixin,
     success_message = gettext("Пользователь успешно удалён")
     error_output = "У вас нет прав для изменения другого пользователя."
     error_url = reverse_lazy('list_of_users')
+    error_message = "Невозможно удалить пользователя, \
+        потому что он используется"
+    redirect_url = reverse_lazy('list_of_users')
